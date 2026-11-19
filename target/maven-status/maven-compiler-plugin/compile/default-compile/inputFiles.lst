@@ -1,0 +1,11 @@
+/private/tmp/spring-task-manager-work/projects/15-spring-data-jpa/src/main/java/com/study/core/model/Task.java
+/private/tmp/spring-task-manager-work/projects/15-spring-data-jpa/src/main/java/com/study/core/config/AppProperties.java
+/private/tmp/spring-task-manager-work/projects/15-spring-data-jpa/src/main/java/com/study/core/Application.java
+/private/tmp/spring-task-manager-work/projects/15-spring-data-jpa/src/main/java/com/study/core/controller/TaskController.java
+/private/tmp/spring-task-manager-work/projects/15-spring-data-jpa/src/main/java/com/study/core/service/TaskService.java
+/private/tmp/spring-task-manager-work/projects/15-spring-data-jpa/src/main/java/com/study/core/repository/TaskRepository.java
+/private/tmp/spring-task-manager-work/projects/15-spring-data-jpa/src/main/java/com/study/core/service/TaskStatsService.java
+/private/tmp/spring-task-manager-work/projects/15-spring-data-jpa/src/main/java/com/study/core/exception/GlobalExceptionHandler.java
+/private/tmp/spring-task-manager-work/projects/15-spring-data-jpa/src/main/java/com/study/core/exception/TaskNotFoundException.java
+/private/tmp/spring-task-manager-work/projects/15-spring-data-jpa/src/main/java/com/study/core/config/AppConfig.java
+/private/tmp/spring-task-manager-work/projects/15-spring-data-jpa/src/main/java/com/study/core/service/TaskServiceImpl.java

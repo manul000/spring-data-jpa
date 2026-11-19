@@ -1,0 +1,753 @@
+{
+  "info": {
+    "name": "Task Manager — Data JPA",
+    "description": "Выполнить по порядку после перезапуска приложения. baseUrl уже заполнен.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "01 — Пустой список после запуска",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "const responseData = pm.response.json(); const tasks = Array.isArray(responseData) ? responseData : responseData.content;",
+              "pm.test(\"Пустой список\", () => pm.expect(tasks).to.have.lengthOf(0));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Создать: Купить молоко",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Купить молоко\",\n  \"description\": \"Список покупок\",\n  \"priority\": \"LOW\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+              "const task = pm.response.json();",
+              "pm.collectionVariables.set(\"firstId\", String(task.id));",
+              "pm.test(\"Создана задача с числовым id\", () => pm.expect(task.id).to.be.a(\"number\"));",
+              "pm.test(\"Начальный статус NEW\", () => pm.expect(task.status).to.equal(\"NEW\"));",
+              "pm.collectionVariables.set(\"firstCreatedAt\", task.createdAt);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Создать: Прочитать главу",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Прочитать главу\",\n  \"description\": \"Учёба\",\n  \"priority\": \"MEDIUM\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+              "const task = pm.response.json();",
+              "pm.collectionVariables.set(\"secondId\", String(task.id));",
+              "pm.test(\"Создана задача с числовым id\", () => pm.expect(task.id).to.be.a(\"number\"));",
+              "pm.test(\"Начальный статус NEW\", () => pm.expect(task.status).to.equal(\"NEW\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Создать: Подготовить защиту",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Подготовить защиту\",\n  \"description\": \"Нужно купить материалы\",\n  \"priority\": \"HIGH\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+              "const task = pm.response.json();",
+              "pm.collectionVariables.set(\"thirdId\", String(task.id));",
+              "pm.test(\"Создана задача с числовым id\", () => pm.expect(task.id).to.be.a(\"number\"));",
+              "pm.test(\"Начальный статус NEW\", () => pm.expect(task.status).to.equal(\"NEW\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Создать: Купить хлеб",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Купить хлеб\",\n  \"description\": \"Покупки\",\n  \"priority\": \"LOW\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+              "const task = pm.response.json();",
+              "pm.collectionVariables.set(\"fourthId\", String(task.id));",
+              "pm.test(\"Создана задача с числовым id\", () => pm.expect(task.id).to.be.a(\"number\"));",
+              "pm.test(\"Начальный статус NEW\", () => pm.expect(task.status).to.equal(\"NEW\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Создать: Написать отчёт",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Написать отчёт\",\n  \"description\": \"Документация\",\n  \"priority\": \"HIGH\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", function () { pm.response.to.have.status(201); });",
+              "const task = pm.response.json();",
+              "pm.collectionVariables.set(\"fifthId\", String(task.id));",
+              "pm.test(\"Создана задача с числовым id\", () => pm.expect(task.id).to.be.a(\"number\"));",
+              "pm.test(\"Начальный статус NEW\", () => pm.expect(task.status).to.equal(\"NEW\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Список всех задач",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "const responseData = pm.response.json(); const tasks = Array.isArray(responseData) ? responseData : responseData.content;",
+              "pm.test(\"Все задачи\", () => pm.expect(tasks).to.have.lengthOf(5));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Задача по id",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks/{{firstId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Название\", () => pm.expect(pm.response.json().title).to.equal(\"Купить молоко\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Отсутствующая задача — JSON 404",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks/999999"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 404\", function () { pm.response.to.have.status(404); });",
+              "pm.test(\"JSON ошибки\", () => pm.expect(pm.response.json()).to.have.all.keys(\"error\", \"message\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Полностью обновить первую задачу",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks/{{firstId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Купить молоко и хлеб\",\n  \"description\": \"Обновлённый список\",\n  \"priority\": \"HIGH\",\n  \"status\": \"DONE\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Статус и время создания\", () => { const t=pm.response.json(); pm.expect(t.status).to.equal(\"DONE\"); pm.expect(t.createdAt).to.equal(pm.collectionVariables.get(\"firstCreatedAt\")); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Изменить статус второй задачи",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks/{{secondId}}/status",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"IN_PROGRESS\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Новый статус\", () => pm.expect(pm.response.json().status).to.equal(\"IN_PROGRESS\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Фильтр: status=NEW",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks?status=NEW"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "const responseData = pm.response.json(); const tasks = Array.isArray(responseData) ? responseData : responseData.content;",
+              "pm.test(\"Все задачи соответствуют фильтру\", () => { pm.expect(tasks.length).to.be.above(0); tasks.forEach(t => pm.expect(t.status).to.equal(\"NEW\")); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Фильтр: priority=HIGH",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks?priority=HIGH"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "const responseData = pm.response.json(); const tasks = Array.isArray(responseData) ? responseData : responseData.content;",
+              "pm.test(\"Все задачи соответствуют фильтру\", () => { pm.expect(tasks.length).to.be.above(0); tasks.forEach(t => pm.expect(t.priority).to.equal(\"HIGH\")); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Комбинированный фильтр",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks?status=NEW&priority=HIGH"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "const responseData = pm.response.json(); const tasks = Array.isArray(responseData) ? responseData : responseData.content;",
+              "pm.test(\"Оба фильтра\", () => { pm.expect(tasks.length).to.be.above(0); tasks.forEach(t => { pm.expect(t.status).to.equal(\"NEW\"); pm.expect(t.priority).to.equal(\"HIGH\"); }); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Статистика по статусам",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks/stats"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Количество по статусам\", () => pm.expect(pm.response.json()).to.deep.equal({NEW:3, IN_PROGRESS:1, DONE:1}));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Первая страница из трёх задач",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks?page=0&size=3&sort=id"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Первая страница\", () => { const p=pm.response.json(); pm.expect(p.content).to.have.lengthOf(3); pm.expect(p.totalElements).to.equal(5); pm.expect(p.totalPages).to.equal(2); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Вторая страница из двух задач",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks?page=1&size=3"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Вторая страница\", () => pm.expect(pm.response.json().content).to.have.lengthOf(2));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Поиск в названии и описании",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks/search?keyword=купить"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Поиск без учёта регистра\", () => { const rows=pm.response.json(); pm.expect(rows).to.have.lengthOf(3); rows.forEach(t => pm.expect((t.title+\" \"+t.description).toLowerCase()).to.include(\"купить\")); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Задачи за сегодня — условный пункт",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks/today"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Все созданные сегодня\", () => pm.expect(pm.response.json()).to.have.lengthOf(5));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Удалить задачу",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks/{{fifthId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 204\", function () { pm.response.to.have.status(204); });",
+              "pm.test(\"Тело отсутствует\", () => pm.expect(pm.response.text()).to.equal(\"\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Удалённая задача не найдена",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks/{{fifthId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 404\", function () { pm.response.to.have.status(404); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Итоговый список",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+              "const responseData = pm.response.json(); const tasks = Array.isArray(responseData) ? responseData : responseData.content;",
+              "pm.test(\"Удаление подтверждено\", () => pm.expect(tasks).to.have.lengthOf(4));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Пустое название — ошибка 400",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"   \",\n  \"priority\": \"LOW\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", function () { pm.response.to.have.status(400); });",
+              "pm.test(\"Понятная ошибка\", () => pm.expect(pm.response.json().message).to.include(\"Название\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Неверный статус — ошибка 400",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/tasks/{{firstId}}/status",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"UNKNOWN\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", function () { pm.response.to.have.status(400); });"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
